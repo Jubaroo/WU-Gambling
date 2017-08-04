@@ -87,7 +87,7 @@ public class SetTargetRoulette implements WurmServerMod, ItemTypes, MiscConstant
             source.setData2(-1);
             source.setColor(-1);
             target.setName(target.getTemplate().getName() + " [Roulette]");
-            performer.getCommunicator().sendNormalServerMessage("Set to roulette. All bet info cleared.");
+            performer.getCommunicator().sendNormalServerMessage("Set to roulette.");
         } else {
             performer.getCommunicator().sendNormalServerMessage("Cant do that.");
         }

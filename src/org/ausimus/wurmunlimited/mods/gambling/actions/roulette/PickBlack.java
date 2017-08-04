@@ -67,9 +67,7 @@ public class PickBlack implements WurmServerMod, ItemTypes, MiscConstants, ModAc
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target
-                && source.getTemplateId() == AusConstants.GamblingTokenTemplateID
-                && target.getAuxData() == AusConstants.GameModeRoulette) {
+        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID && source.getColor() != AusConstants.Black) {
             return Collections.singletonList(actionEntry);
         } else {
             return null;
@@ -88,28 +86,11 @@ public class PickBlack implements WurmServerMod, ItemTypes, MiscConstants, ModAc
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
         // Set the color
-        String logFile = "mods/GambleMod/Roulette/log.txt";
-        if (source == target
-                && source.getTemplateId() == AusConstants.GamblingTokenTemplateID
-                && target.getAuxData() == AusConstants.GameModeRoulette) {
+        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID && source.getColor() != AusConstants.Black) {
             target.setColor(AusConstants.Black);
             target.setName(target.getName());
             target.setName(target.getTemplate().getName() + " [Roulette], [++]");
             performer.getCommunicator().sendNormalServerMessage("You chose black");
-            try {
-                // Log Writer
-                FileWriter writeLog = new FileWriter(logFile, true);
-                BufferedWriter bufferedLogWriter = new BufferedWriter(writeLog);
-                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                Date timeStamp = new Date();
-                bufferedLogWriter.write("==========================================================\n");
-                bufferedLogWriter.write(dateFormat.format(timeStamp) + "\n");
-                bufferedLogWriter.write(performer.getName() + " chose Black.\n");
-                bufferedLogWriter.write("==========================================================\n");
-                bufferedLogWriter.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         } else {
             performer.getCommunicator().sendNormalServerMessage("Cant do that");
         }

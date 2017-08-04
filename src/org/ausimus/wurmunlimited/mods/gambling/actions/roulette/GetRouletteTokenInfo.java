@@ -16,6 +16,7 @@ package org.ausimus.wurmunlimited.mods.gambling.actions.roulette;
 */
 
 import com.wurmonline.server.*;
+import com.wurmonline.server.economy.Change;
 import com.wurmonline.server.items.*;
 import org.ausimus.wurmunlimited.mods.gambling.config.AusConstants;
 import org.gotti.wurmunlimited.modloader.interfaces.WurmServerMod;
@@ -27,6 +28,7 @@ import com.wurmonline.server.behaviours.Action;
 import com.wurmonline.server.behaviours.ActionEntry;
 import com.wurmonline.server.creatures.Creature;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class GetRouletteTokenInfo implements WurmServerMod, ItemTypes, MiscConst
 
     public GetRouletteTokenInfo() {
         actionID = (short) ModActions.getNextActionId();
-        actionEntry = ActionEntry.createEntry(actionID, "Get Bet Info", "Getting", new int[]{});
+        actionEntry = ActionEntry.createEntry(actionID, "Get Roulette Info", "Getting", new int[]{});
         ModActions.registerAction(actionEntry);
     }
 
@@ -63,9 +65,7 @@ public class GetRouletteTokenInfo implements WurmServerMod, ItemTypes, MiscConst
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target
-                && source.getTemplateId() == AusConstants.GamblingTokenTemplateID
-                && target.getAuxData() == AusConstants.GameModeRoulette) {
+        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
             return Collections.singletonList(actionEntry);
         } else {
             return null;
@@ -83,17 +83,23 @@ public class GetRouletteTokenInfo implements WurmServerMod, ItemTypes, MiscConst
      **/
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
-        if (source == target
-                && source.getTemplateId() == AusConstants.GamblingTokenTemplateID
-                && target.getAuxData() == AusConstants.GameModeRoulette) {
+        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
             if (target.getColor() == AusConstants.Black) {
                 performer.getCommunicator().sendNormalServerMessage("Color is Black.");
             }
             if (target.getColor() == AusConstants.White) {
                 performer.getCommunicator().sendNormalServerMessage("Color is White.");
             }
+            if (target.getData1() >= 0) {
+                Change c = new Change(target.getData1());
+                performer.getCommunicator().sendNormalServerMessage("Value is " + c.getChangeString() + ".");
+            }
+            if (target.getData2() >= 0) {
+                performer.getCommunicator().sendNormalServerMessage("Number is " + target.getData2() + ".");
+            }
+
         } else {
-            performer.getCommunicator().sendNormalServerMessage("Cant do that");
+            performer.getCommunicator().sendNormalServerMessage("Cant do that.");
         }
         return true;
     }

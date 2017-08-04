@@ -68,9 +68,7 @@ public class PickNumber implements WurmServerMod, ItemTypes, MiscConstants, ModA
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target
-                && source.getTemplateId() == AusConstants.GamblingTokenTemplateID
-                && target.getAuxData() == AusConstants.GameModeRoulette) {
+        if (source == target && target.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
             return Collections.singletonList(actionEntry);
         } else {
             return null;
@@ -91,28 +89,11 @@ public class PickNumber implements WurmServerMod, ItemTypes, MiscConstants, ModA
         // Set the color
         Random rand = new Random();
         int randomNumber = rand.nextInt(37);
-        String logFile = "mods/GambleMod/Roulette/log.txt";
-        if (source == target
-                && source.getTemplateId() == AusConstants.GamblingTokenTemplateID
-                && target.getAuxData() == AusConstants.GameModeRoulette) {
+        if (source == target && target.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
             target.setName(target.getName());
             target.setData2(randomNumber);
             target.setName(target.getTemplate().getName() + "[Roulette], [++]");
             performer.getCommunicator().sendNormalServerMessage("You choose " + randomNumber + ".");
-            try {
-                // Log Writer
-                FileWriter writeLog = new FileWriter(logFile, true);
-                BufferedWriter bufferedLogWriter = new BufferedWriter(writeLog);
-                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                Date timeStamp = new Date();
-                bufferedLogWriter.write("==========================================================\n");
-                bufferedLogWriter.write(dateFormat.format(timeStamp) + "\n");
-                bufferedLogWriter.write(performer.getName() + " chose White.\n");
-                bufferedLogWriter.write("==========================================================\n");
-                bufferedLogWriter.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         } else {
             performer.getCommunicator().sendNormalServerMessage("Cant do that");
         }

@@ -28,9 +28,6 @@ import com.wurmonline.server.behaviours.Action;
 import com.wurmonline.server.behaviours.ActionEntry;
 import com.wurmonline.server.creatures.Creature;
 
-import java.io.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class SlotRoll implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
@@ -88,7 +85,6 @@ public class SlotRoll implements WurmServerMod, ItemTypes, MiscConstants, ModAct
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
         int value = 0;
-        String coinString = null;
         Random random = new Random();
         if (source == target
                 && source.getTemplateId() == AusConstants.GamblingTokenTemplateID
@@ -96,51 +92,39 @@ public class SlotRoll implements WurmServerMod, ItemTypes, MiscConstants, ModAct
             // Designate coin values
             if (source.getTemplateId() == ItemList.coinIron) {
                 value = MonetaryConstants.COIN_IRON;
-                coinString = "Coin Iron";
             }
             if (source.getTemplateId() == ItemList.coinIronFive) {
                 value = MonetaryConstants.COIN_IRON * 5;
-                coinString = "5 Coin Iron";
             }
             if (source.getTemplateId() == ItemList.coinIronTwenty) {
                 value = MonetaryConstants.COIN_IRON * 20;
-                coinString = "20 Coin Iron";
             }
             if (source.getTemplateId() == ItemList.coinCopper) {
                 value = MonetaryConstants.COIN_COPPER;
-                coinString = "Coin Copper";
             }
             if (source.getTemplateId() == ItemList.coinCopperFive) {
                 value = MonetaryConstants.COIN_COPPER * 5;
-                coinString = "5 Coin Copper";
             }
             if (source.getTemplateId() == ItemList.coinCopperTwenty) {
                 value = MonetaryConstants.COIN_COPPER * 20;
-                coinString = "20 Coin Copper";
             }
             if (source.getTemplateId() == ItemList.coinSilver) {
                 value = MonetaryConstants.COIN_SILVER;
-                coinString = "Coin Silver";
             }
             if (source.getTemplateId() == ItemList.coinSilverFive) {
                 value = MonetaryConstants.COIN_SILVER * 5;
-                coinString = "5 Coin Silver";
             }
             if (source.getTemplateId() == ItemList.coinSilverTwenty) {
                 value = MonetaryConstants.COIN_SILVER * 20;
-                coinString = "20 Coin Silver";
             }
             if (source.getTemplateId() == ItemList.coinGold) {
                 value = MonetaryConstants.COIN_GOLD;
-                coinString = "Gold Coin";
             }
             if (source.getTemplateId() == ItemList.coinGoldFive) {
                 value = MonetaryConstants.COIN_GOLD * 5;
-                coinString = "5 Coin Gold";
             }
             if (source.getTemplateId() == ItemList.coinGoldTwenty) {
                 value = MonetaryConstants.COIN_GOLD * 20;
-                coinString = "20 Coin Gold";
             }
             performer.getCommunicator().sendNormalServerMessage("You bet a coin with a value of " + value + " Irons.");
 
@@ -165,25 +149,6 @@ public class SlotRoll implements WurmServerMod, ItemTypes, MiscConstants, ModAct
             } else {
                 performer.getCommunicator().sendNormalServerMessage("Number of matches: 0");
                 performer.getCommunicator().sendNormalServerMessage("You have won: 0");
-            }
-
-            try {
-                // Log Writer
-                String logFile = "mods/GambleMod/log.txt";
-                FileWriter writeLog = new FileWriter(logFile, true);
-                BufferedWriter bufferedLogWriter = new BufferedWriter(writeLog);
-                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                Date timeStamp = new Date();
-                bufferedLogWriter.write("==========================================================\n");
-                bufferedLogWriter.write(dateFormat.format(timeStamp) + "\n");
-                bufferedLogWriter.write("" + performer.getName() + " bet a " + coinString + ".\n");
-                bufferedLogWriter.write("==========================================================\n");
-                bufferedLogWriter.close();
-            } catch (IOException ex) {
-                if (performer.getPower() == 5) {
-                    performer.getCommunicator().sendNormalServerMessage(String.valueOf(ex));
-                }
-                ex.printStackTrace();
             }
         } else {
             performer.getCommunicator().sendNormalServerMessage("Cant do that.");

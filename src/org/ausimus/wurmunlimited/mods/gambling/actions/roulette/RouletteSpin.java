@@ -89,18 +89,13 @@ public class RouletteSpin implements WurmServerMod, ItemTypes, MiscConstants, Mo
         Random rand = new Random();
         int randomNumberPick = rand.nextInt(37);
         int randomColor = rand.nextInt(2);
-        String logFile = "mods/GambleMod/Roulette/log.txt";
-
         if (target.getData2() == -1 && target.getColor() == -1) {
             performer.getCommunicator().sendNormalServerMessage("The token has no bet data.");
             return true;
         }
 
-            // Single
-        if (
-                source.getTemplateId() == AusConstants.GamblingTokenTemplateID
-                && target.getTemplateId() == AusConstants.GamblingMachineTemplateID
-                && target.getAuxData() == AusConstants.GameModeRoulette) {
+        // Single
+        if (source.getTemplateId() == AusConstants.GamblingTokenTemplateID && target.getTemplateId() == AusConstants.GamblingMachineTemplateID && target.getAuxData() == AusConstants.GameModeRoulette) {
             if (target.getColor() == AusConstants.Black || target.getColor() == AusConstants.White) {
                 switch (randomColor) {
                     case 0:
@@ -138,20 +133,6 @@ public class RouletteSpin implements WurmServerMod, ItemTypes, MiscConstants, Mo
                 if (randomNumberPick == target.getData2() && target.getColor() == AusConstants.White && randomColor == 1) {
                     performer.getCommunicator().sendNormalServerMessage("You won the color and the number.");
                 }
-            }
-            try {
-                // Log Writer
-                FileWriter writeLog = new FileWriter(logFile, true);
-                BufferedWriter bufferedLogWriter = new BufferedWriter(writeLog);
-                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                Date timeStamp = new Date();
-                bufferedLogWriter.write("==========================================================\n");
-                bufferedLogWriter.write(dateFormat.format(timeStamp) + "\n");
-                bufferedLogWriter.write(performer.getName() + " rolled " + randomColor + ".\n");
-                bufferedLogWriter.write("==========================================================\n");
-                bufferedLogWriter.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
             }
         } else {
             performer.getCommunicator().sendNormalServerMessage("Cant do that");

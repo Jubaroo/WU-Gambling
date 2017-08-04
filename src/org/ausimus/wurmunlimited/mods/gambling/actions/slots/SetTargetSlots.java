@@ -87,7 +87,7 @@ public class SetTargetSlots implements WurmServerMod, ItemTypes, MiscConstants, 
             source.setData2(-1);
             source.setColor(-1);
             target.setName(target.getTemplate().getName() + "[Slots]");
-            performer.getCommunicator().sendNormalServerMessage("Set to slots. All bet info cleared.");
+            performer.getCommunicator().sendNormalServerMessage("Set to slots.");
         } else {
             performer.getCommunicator().sendNormalServerMessage("Cant do that.");
         }
