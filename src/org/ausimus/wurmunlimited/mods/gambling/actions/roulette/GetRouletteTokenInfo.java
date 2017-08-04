@@ -28,7 +28,6 @@ import com.wurmonline.server.behaviours.Action;
 import com.wurmonline.server.behaviours.ActionEntry;
 import com.wurmonline.server.creatures.Creature;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
