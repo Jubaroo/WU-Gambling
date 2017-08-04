@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
-  <asset><contributor><author></author><authoring_tool>FBX COLLADA exporter</authoring_tool><comments></comments></contributor><created>2017-08-04T21:57:56Z</created><keywords></keywords><modified>2017-08-04T21:57:56Z</modified><revision></revision><subject></subject><title></title><unit meter="0.025400" name="centimeter"></unit><up_axis>Y_UP</up_axis></asset>
+  <asset><contributor><author></author><authoring_tool>FBX COLLADA exporter</authoring_tool><comments></comments></contributor><created>2017-08-04T22:48:50Z</created><keywords></keywords><modified>2017-08-04T22:48:50Z</modified><revision></revision><subject></subject><title></title><unit meter="0.025400" name="centimeter"></unit><up_axis>Y_UP</up_axis></asset>
   <library_images>
     <image id="Map #4-image" name="Map #4"><init_from>AusGMDIFF_Main.png</init_from></image>
   </library_images>
@@ -474,59 +474,9 @@
       </mesh>
     </geometry>
   </library_geometries>
-  <library_controllers>
-    <controller id="AusGamblingMachineController">
-      <skin source="#AusGamblingMachine-lib">
-        <bind_shape_matrix>0.082974 -0.000000 0.000000 0.000000 0.000000 0.082974 -0.000000 0.000000 0.000000 0.000000 0.082974 0.000000 0.000000 0.000000 0.000000 1.000000
-</bind_shape_matrix>
-        <source id="AusGamblingMachineController-Joints">
-          <Name_array id="AusGamblingMachineController-Joints-array" count="1">
- MainRotator</Name_array>
-          <technique_common>
-            <accessor source="#AusGamblingMachineController-Joints-array" count="1">
-              <param type="name"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <source id="AusGamblingMachineController-Matrices">
-          <float_array id="AusGamblingMachineController-Matrices-array" count="16">
-
-28.494358 -0.000000 -1.119225 0.000000 0.000000 28.516331 0.000001 -47.322083 1.119225 -0.000001 28.494358 -0.000005 0.000000 0.000000 0.000000 1.000000</float_array>
-          <technique_common>
-            <accessor source="#AusGamblingMachineController-Matrices-array" count="1" stride="16">
-              <param type="float4x4"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <source id="AusGamblingMachineController-Weights">
-          <float_array id="AusGamblingMachineController-Weights-array" count="43">
-
-1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000
-1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000
-1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000</float_array>
-          <technique_common>
-            <accessor source="#AusGamblingMachineController-Weights-array" count="43">
-              <param type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <joints>
-          <input semantic="JOINT" source="#AusGamblingMachineController-Joints"/>
-          <input semantic="INV_BIND_MATRIX" source="#AusGamblingMachineController-Matrices"/>
-        </joints>
-        <vertex_weights count="42">
-          <input semantic="JOINT" offset="0" source="#AusGamblingMachineController-Joints"/>
-          <input semantic="WEIGHT" offset="1" source="#AusGamblingMachineController-Weights"/>
-          <vcount>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</vcount>
-          <v>0 1 0 2 0 3 0 4 0 5 0 6 0 7 0 8 0 9 0 10 0 11 0 12 0 13 0 14 0 15 0 16 0 17 0 18 0 19 0 20 0 21 0 22 0 23 0 24 0 25 0 26 0 27 0 28 0 29 0 30 0 31 0 32 0 33 0 34 0 35 0 36 0 37 0 38 0 39 0 40 0 41 0 42</v>
-        </vertex_weights>
-      </skin>
-    </controller>
-  </library_controllers>
   <library_visual_scenes>
     <visual_scene id="AusGamblingMachine" name="AusGamblingMachine">
-      <node name="AusGamblingMachine" id="AusGamblingMachine" sid="AusGamblingMachine"><instance_controller url="#AusGamblingMachineController"><bind_material><technique_common><instance_material symbol="_02 - Default" target="#_02 - Default"/></technique_common></bind_material></instance_controller><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node>
-      <node name="MainRotator" id="MainRotator" sid="MainRotator" type="JOINT"><matrix sid="matrix">0.035041 0.000000 0.001376 0.000000 0.000000 0.035068 -0.000000 1.659473 -0.001376 0.000000 0.035041 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node>
+      <node name="AusGamblingMachine" id="AusGamblingMachine" sid="AusGamblingMachine"><matrix sid="matrix">0.082974 0.000000 0.000000 0.000000 0.000000 0.082974 -0.000000 0.000000 0.000000 0.000000 0.082974 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#AusGamblingMachine-lib"><bind_material><technique_common><instance_material symbol="_02 - Default" target="#_02 - Default"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node>
       <extra><technique profile="MAX3D"><frame_rate>30.000000</frame_rate></technique><technique profile="FCOLLADA"><start_time>0.000000</start_time><end_time>3.333333</end_time></technique></extra>
     </visual_scene>
   </library_visual_scenes>
