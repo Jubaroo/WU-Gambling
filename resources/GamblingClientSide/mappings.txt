@@ -1,0 +1,1 @@
+model.ausimus.GamblingMachine = AusGamblingMachine.DAE

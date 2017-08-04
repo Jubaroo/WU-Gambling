@@ -21,6 +21,7 @@ public class AusConstants {
     public static byte GameModeSlots = 1;
     public static byte GameModeRoulette = 2;
     public static int GamblingTokenTemplateID = 13370;
+    public static int GamblingMachineTemplateID = 13371;
     public static int Black = WurmColor.createColor(0, 0, 0);
     public static int White = WurmColor.createColor(255, 255, 255);
 }
