@@ -17,6 +17,7 @@ package org.ausimus.wurmunlimited.mods.gambling.actions.roulette;
 
 import com.wurmonline.server.*;
 import com.wurmonline.server.items.*;
+import com.wurmonline.server.players.Player;
 import com.wurmonline.shared.constants.ItemMaterials;
 import org.ausimus.wurmunlimited.mods.gambling.config.AusConstants;
 import org.gotti.wurmunlimited.modloader.interfaces.WurmServerMod;
@@ -29,12 +30,12 @@ import com.wurmonline.server.behaviours.ActionEntry;
 import com.wurmonline.server.creatures.Creature;
 import java.util.*;
 
-public class SetTokenRoulette implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
+public class SetTargetRoulette implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
 
     private static short actionID;
     private static ActionEntry actionEntry;
 
-    public SetTokenRoulette() {
+    public SetTargetRoulette() {
         actionID = (short) ModActions.getNextActionId();
         actionEntry = ActionEntry.createEntry(actionID, "Set to Roulette", "setting", new int[]{});
         ModActions.registerAction(actionEntry);
@@ -63,9 +64,7 @@ public class SetTokenRoulette implements WurmServerMod, ItemTypes, MiscConstants
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target
-                && target.getTemplateId() == AusConstants.GamblingTokenTemplateID
-                && target.getAuxData() != AusConstants.GameModeRoulette) {
+        if (performer instanceof Player && target.getTemplateId() == AusConstants.GamblingMachineTemplateID && target.getAuxData() != AusConstants.GameModeRoulette) {
             return Collections.singletonList(actionEntry);
         } else {
             return null;
@@ -83,12 +82,10 @@ public class SetTokenRoulette implements WurmServerMod, ItemTypes, MiscConstants
      **/
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
-        if (source == target
-                && target.getTemplateId() == AusConstants.GamblingTokenTemplateID
-                && target.getAuxData() != AusConstants.GameModeRoulette) {
+        if (performer instanceof Player && target.getTemplateId() == AusConstants.GamblingMachineTemplateID && target.getAuxData() != AusConstants.GameModeRoulette) {
             target.setAuxData(AusConstants.GameModeRoulette);
-            target.setData2(-1);
-            target.setColor(-1);
+            source.setData2(-1);
+            source.setColor(-1);
             target.setName(target.getTemplate().getName() + " [Roulette]");
             performer.getCommunicator().sendNormalServerMessage("Set to roulette. All bet info cleared.");
         } else {

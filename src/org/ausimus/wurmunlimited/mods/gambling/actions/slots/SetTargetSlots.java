@@ -17,6 +17,7 @@ package org.ausimus.wurmunlimited.mods.gambling.actions.slots;
 
 import com.wurmonline.server.*;
 import com.wurmonline.server.items.*;
+import com.wurmonline.server.players.Player;
 import com.wurmonline.shared.constants.ItemMaterials;
 import org.ausimus.wurmunlimited.mods.gambling.config.AusConstants;
 import org.gotti.wurmunlimited.modloader.interfaces.WurmServerMod;
@@ -29,12 +30,12 @@ import com.wurmonline.server.behaviours.ActionEntry;
 import com.wurmonline.server.creatures.Creature;
 import java.util.*;
 
-public class SetTokenSlots implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
+public class SetTargetSlots implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
 
     private static short actionID;
     private static ActionEntry actionEntry;
 
-    public SetTokenSlots() {
+    public SetTargetSlots() {
         actionID = (short) ModActions.getNextActionId();
         actionEntry = ActionEntry.createEntry(actionID, "Set to Slots", "Rolling", new int[]{});
         ModActions.registerAction(actionEntry);
@@ -63,9 +64,7 @@ public class SetTokenSlots implements WurmServerMod, ItemTypes, MiscConstants, M
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target
-                && target.getTemplateId() == AusConstants.GamblingTokenTemplateID
-                && target.getAuxData() != AusConstants.GameModeSlots) {
+        if (performer instanceof Player && target.getTemplateId() == AusConstants.GamblingMachineTemplateID && target.getAuxData() != AusConstants.GameModeSlots) {
             return Collections.singletonList(actionEntry);
         } else {
             return null;
@@ -83,12 +82,10 @@ public class SetTokenSlots implements WurmServerMod, ItemTypes, MiscConstants, M
      **/
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
-        if (source == target
-                && target.getTemplateId() == AusConstants.GamblingTokenTemplateID
-                && target.getAuxData() != AusConstants.GameModeSlots) {
+        if (performer instanceof Player && target.getTemplateId() == AusConstants.GamblingMachineTemplateID && target.getAuxData() != AusConstants.GameModeSlots) {
             target.setAuxData(AusConstants.GameModeSlots);
-            target.setData2(-1);
-            target.setColor(-1);
+            source.setData2(-1);
+            source.setColor(-1);
             target.setName(target.getTemplate().getName() + "[Slots]");
             performer.getCommunicator().sendNormalServerMessage("Set to slots. All bet info cleared.");
         } else {

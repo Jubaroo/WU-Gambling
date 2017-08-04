@@ -16,7 +16,7 @@ package org.ausimus.wurmunlimited.mods.gambling.actions;
 */
 
 import org.ausimus.wurmunlimited.mods.gambling.actions.roulette.*;
-import org.ausimus.wurmunlimited.mods.gambling.actions.slots.SetTokenSlots;
+import org.ausimus.wurmunlimited.mods.gambling.actions.slots.SetTargetSlots;
 import org.ausimus.wurmunlimited.mods.gambling.actions.slots.SlotRoll;
 import org.gotti.wurmunlimited.modsupport.actions.ModActions;
 
@@ -27,9 +27,10 @@ public class ActionsInit {
         ModActions.registerAction(new RouletteSpin());
         ModActions.registerAction(new PickBlack());
         ModActions.registerAction(new PickWhite());
-        ModActions.registerAction(new SetTokenSlots());
-        ModActions.registerAction(new SetTokenRoulette());
+        ModActions.registerAction(new SetTargetSlots());
+        ModActions.registerAction(new SetTargetRoulette());
         ModActions.registerAction(new PickNumber());
         ModActions.registerAction(new GetRouletteTokenInfo());
+        ModActions.registerAction(new TokenRedeem());
     }
 }
