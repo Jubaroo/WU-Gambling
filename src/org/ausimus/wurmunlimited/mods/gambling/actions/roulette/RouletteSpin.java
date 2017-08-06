@@ -64,7 +64,7 @@ public class RouletteSpin implements WurmServerMod, ItemTypes, MiscConstants, Mo
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target && target.getTemplateId() == AusConstants.GamblingTokenTemplateID && target.getAuxData() == AusConstants.GameModeRoulette) {
+        if (source.getTemplateId() == AusConstants.GamblingTokenTemplateID && target.getTemplateId() == AusConstants.GamblingMachineTemplateID && target.getAuxData() == AusConstants.GameModeRoulette) {
             return Collections.singletonList(actionEntryPT);
         } else {
             return null;

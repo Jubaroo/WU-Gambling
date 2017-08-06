@@ -17,7 +17,6 @@ package org.ausimus.wurmunlimited.mods.gambling.actions.roulette;
 
 import com.wurmonline.server.*;
 import com.wurmonline.server.items.*;
-import com.wurmonline.server.questions.PickNumberQuestion;
 import org.ausimus.wurmunlimited.mods.gambling.config.AusConstants;
 import org.gotti.wurmunlimited.modloader.interfaces.WurmServerMod;
 import org.gotti.wurmunlimited.modsupport.actions.ActionPerformer;
@@ -30,13 +29,13 @@ import com.wurmonline.server.creatures.Creature;
 import java.util.Collections;
 import java.util.List;
 
-public class PickNumber implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
+public class PlaceBet implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
     private static short actionID;
     private static ActionEntry actionEntry;
 
-    public PickNumber() {
+    public PlaceBet() {
         actionID = (short) ModActions.getNextActionId();
-        actionEntry = ActionEntry.createEntry(actionID, "Pick Number", "Picking", new int[]{});
+        actionEntry = ActionEntry.createEntry(actionID, "Place Bet", "Picking", new int[]{});
         ModActions.registerAction(actionEntry);
     }
 
@@ -63,7 +62,7 @@ public class PickNumber implements WurmServerMod, ItemTypes, MiscConstants, ModA
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target && target.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
+        if (source.getTemplateId() == AusConstants.GamblingTokenTemplateID && target.getTemplateId() == AusConstants.GamblingMachineTemplateID) {
             return Collections.singletonList(actionEntry);
         } else {
             return null;
@@ -81,9 +80,22 @@ public class PickNumber implements WurmServerMod, ItemTypes, MiscConstants, ModA
      **/
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
-        if (source == target && target.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
-            PickNumberQuestion pnq = new PickNumberQuestion(performer, "Imput a number.", "Imput a number.", target.getWurmId());
-            pnq.sendQuestion();
+        if (source.getTemplateId() == AusConstants.GamblingTokenTemplateID && target.getTemplateId() == AusConstants.GamblingMachineTemplateID) {
+            if (source.getData2() < 0 && source.getColor() < 0) {
+                performer.getCommunicator().sendNormalServerMessage("The token has no bet info.");
+                return true;
+            }
+            source.setIsNoTake(true);
+            source.savePermissions();
+            target.setData1(target.getData1() + source.getData1());
+            if (source.getColor() >= 0) {
+                target.setColor(source.getColor());
+            }
+            if (source.getData2() >= 0) {
+                target.setData2(source.getData2());
+            }
+            performer.getCommunicator().sendNormalServerMessage("Bet placed and token added to machine.");
+            target.getInsertItem().insertItem(source);
         } else {
             performer.getCommunicator().sendNormalServerMessage("Cant do that");
         }

@@ -32,5 +32,6 @@ public class ActionsInit {
         ModActions.registerAction(new PickNumber());
         ModActions.registerAction(new GetRouletteTokenInfo());
         ModActions.registerAction(new TokenRedeem());
+        ModActions.registerAction(new PlaceBet());
     }
 }
