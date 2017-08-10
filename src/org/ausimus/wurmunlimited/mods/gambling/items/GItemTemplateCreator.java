@@ -20,9 +20,12 @@ import com.wurmonline.server.TimeConstants;
 import com.wurmonline.server.items.ItemTypes;
 import com.wurmonline.shared.constants.IconConstants;
 import com.wurmonline.shared.constants.ItemMaterials;
+import org.ausimus.wurmunlimited.mods.gambling.Initiator;
 import org.ausimus.wurmunlimited.mods.gambling.config.AusConstants;
 
 import java.io.IOException;
+
+/*Todo Reformat*/
 
 public class GItemTemplateCreator {
     public GItemTemplateCreator() {
@@ -50,7 +53,7 @@ public class GItemTemplateCreator {
                     150,
                     0,
                     MiscConstants.EMPTY_BYTE_PRIMITIVE_ARRAY,
-                    "null",
+                    "LeNull",
                     100.0F,
                     1,
                     ItemMaterials.MATERIAL_GOLD,
@@ -92,6 +95,9 @@ public class GItemTemplateCreator {
                     true);
         } catch (IOException ex) {
             ex.printStackTrace();
+            if (AusConstants.InDepthLogging) {
+                Initiator.WriteLog(String.valueOf(ex));
+            }
         }
     }
 }

@@ -26,6 +26,8 @@ import org.gotti.wurmunlimited.modsupport.actions.ModActions;
 import com.wurmonline.server.behaviours.Action;
 import com.wurmonline.server.behaviours.ActionEntry;
 import com.wurmonline.server.creatures.Creature;
+
+import java.io.IOException;
 import java.util.Collections;
 
 import java.util.List;
@@ -64,7 +66,7 @@ public class RouletteSpin implements WurmServerMod, ItemTypes, MiscConstants, Mo
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source.getTemplateId() == AusConstants.GamblingTokenTemplateID && target.getTemplateId() == AusConstants.GamblingMachineTemplateID && target.getAuxData() == AusConstants.GameModeRoulette) {
+        if (source.getTemplateId() == ItemList.bodyHand && target.getTemplateId() == AusConstants.GamblingMachineTemplateID && target.getAuxData() == AusConstants.GameModeRoulette) {
             return Collections.singletonList(actionEntryPT);
         } else {
             return null;
@@ -85,53 +87,67 @@ public class RouletteSpin implements WurmServerMod, ItemTypes, MiscConstants, Mo
         Random rand = new Random();
         int randomNumberPick = rand.nextInt(37);
         int randomColor = rand.nextInt(2);
+
         if (target.getData2() == -1 && target.getColor() == -1) {
             performer.getCommunicator().sendNormalServerMessage("The token has no bet data.");
             return true;
         }
 
-        // Single
-        if (source.getTemplateId() == AusConstants.GamblingTokenTemplateID && target.getTemplateId() == AusConstants.GamblingMachineTemplateID && target.getAuxData() == AusConstants.GameModeRoulette) {
-            if (target.getColor() == AusConstants.Black || target.getColor() == AusConstants.White) {
-                switch (randomColor) {
-                    case 0:
-                        if (target.getColor() == AusConstants.Black) {
-                            performer.getCommunicator().sendNormalServerMessage("You Win you rolled black.");
-                        }
-                    case 1:
-                        if (target.getColor() == AusConstants.White && randomColor == 1) {
-                            performer.getCommunicator().sendNormalServerMessage("You Win you rolled white.");
-                        }
-                    default:
-                        if (target.getColor() == AusConstants.White && randomColor == 0) {
-                            performer.getCommunicator().sendNormalServerMessage("You Lose you rolled black.");
-                        }
-                        if (target.getColor() == AusConstants.Black && randomColor == 1) {
-                            performer.getCommunicator().sendNormalServerMessage("You Lose you rolled white.");
-                        }
-                }
-            }
+        try {
+            if (source.getTemplateId() == ItemList.bodyHand && target.getTemplateId() == AusConstants.GamblingMachineTemplateID && target.getAuxData() == AusConstants.GameModeRoulette) {
 
-            // Double
-            if (target.getData2() >= 0) {
-                if (randomNumberPick == target.getData2()) {
-                    performer.getCommunicator().sendNormalServerMessage("You win, you rolled " + randomNumberPick + ".");
-                } else {
-                    performer.getCommunicator().sendNormalServerMessage("You did not win the number, the random # was " + randomNumberPick + ".");
+                // Single
+                if (target.getColor() == AusConstants.Black || target.getColor() == AusConstants.White) {
+                    switch (randomColor) {
+                        case 0:
+                            if (target.getColor() == AusConstants.Black) {
+                                performer.getCommunicator().sendNormalServerMessage("You Win you rolled black.");
+                                performer.setMoney(performer.getMoney() + target.getData1());
+                            }
+                        case 1:
+                            if (target.getColor() == AusConstants.White && randomColor == 1) {
+                                performer.getCommunicator().sendNormalServerMessage("You Win you rolled white.");
+                                performer.setMoney(performer.getMoney() + target.getData1());
+                            }
+                        default:
+                            if (target.getColor() == AusConstants.White && randomColor == 0) {
+                                performer.getCommunicator().sendNormalServerMessage("You Lose you rolled black.");
+                            }
+                            if (target.getColor() == AusConstants.Black && randomColor == 1) {
+                                performer.getCommunicator().sendNormalServerMessage("You Lose you rolled white.");
+                            }
+                    }
                 }
-            }
 
-            // Give em the pot
-            if (target.getColor() != -1 && target.getData2() >= 0) {
-                if (randomNumberPick == target.getData2() && target.getColor() == AusConstants.Black && randomColor == 0) {
-                    performer.getCommunicator().sendNormalServerMessage("You won the color and the number.");
+                // Double
+                if (target.getData2() >= 0) {
+                    if (randomNumberPick == target.getData2()) {
+                        performer.getCommunicator().sendNormalServerMessage("You win, you rolled " + randomNumberPick + ".");
+                        performer.setMoney(performer.getMoney() + target.getData1() * 2);
+                    } else {
+                        performer.getCommunicator().sendNormalServerMessage("You did not win the number, the random # was " + randomNumberPick + ".");
+                    }
                 }
-                if (randomNumberPick == target.getData2() && target.getColor() == AusConstants.White && randomColor == 1) {
-                    performer.getCommunicator().sendNormalServerMessage("You won the color and the number.");
+
+                // Give em the pot
+                if (target.getColor() != -1 && target.getData2() >= 0) {
+                    if (randomNumberPick == target.getData2() && target.getColor() == AusConstants.Black && randomColor == 0) {
+                        performer.getCommunicator().sendNormalServerMessage("You won the color and the number.");
+                        performer.setMoney(performer.getMoney() + target.getData1() * 2);
+                    }
+                    if (randomNumberPick == target.getData2() && target.getColor() == AusConstants.White && randomColor == 1) {
+                        performer.getCommunicator().sendNormalServerMessage("You won the color and the number.");performer.setMoney(performer.getMoney() + target.getData1() * 2);
+                        performer.setMoney(performer.getMoney() + target.getData1() * 2);
+                    }
                 }
+
+                // Reset Bet Value
+                target.setData1(-1);
+            } else {
+                performer.getCommunicator().sendNormalServerMessage("Cant do that");
             }
-        } else {
-            performer.getCommunicator().sendNormalServerMessage("Cant do that");
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
         return true;
     }

@@ -18,6 +18,7 @@ package org.ausimus.wurmunlimited.mods.gambling.actions;
 import com.wurmonline.server.Items;
 import com.wurmonline.server.economy.Change;
 import com.wurmonline.server.items.*;
+import org.ausimus.wurmunlimited.mods.gambling.Initiator;
 import org.ausimus.wurmunlimited.mods.gambling.config.AusConstants;
 import org.gotti.wurmunlimited.modloader.interfaces.WurmServerMod;
 import org.gotti.wurmunlimited.modsupport.actions.ActionPerformer;
@@ -74,15 +75,24 @@ public class TokenRedeem implements WurmServerMod, ItemTypes, MiscConstants, Mod
                 performer.getCommunicator().sendNormalServerMessage("The token has no value.");
                 return true;
             }
-            try {
-                Change c = new Change(performer.getMoney() + target.getData1());
-                performer.setMoney(performer.getMoney() + target.getData1());
-                performer.getCommunicator().sendNormalServerMessage("New Bank balance: " + c.getChangeString() + ".");
-                Items.destroyItem(target.getWurmId());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            Redeem(performer, target);
         }
         return true;
+    }
+
+    /**
+     * @param performer The performer
+     * @param target The target
+     */
+    private void Redeem(Creature performer, Item target) {
+        try {
+            Change c = new Change(performer.getMoney() + target.getData1());
+            performer.setMoney(performer.getMoney() + target.getData1());
+            performer.getCommunicator().sendNormalServerMessage("New Bank balance: " + c.getChangeString() + ".");
+            Items.destroyItem(target.getWurmId());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            Initiator.WriteLog(String.valueOf(ex));
+        }
     }
 }

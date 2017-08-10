@@ -24,30 +24,13 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
 
-public class Initiator implements WurmServerMod, Configurable, PreInitable, ServerStartedListener, ServerPollListener, ItemTemplatesCreatedListener {
-
-    /**
-     * @param properties Will be some properties here later on.
-     */
-    @Override
-    public void configure(Properties properties) {
-    }
-
-    @Override
-    public void init() {
-    }
+public class Initiator implements WurmServerMod, PreInitable, ServerStartedListener, ItemTemplatesCreatedListener {
 
     @Override
     public void preInit() {
         ModActions.init();
         WriteLog("ModActions Initiated.");
-    }
-
-
-    @Override
-    public void onServerPoll() {
     }
 
     @Override
@@ -62,7 +45,10 @@ public class Initiator implements WurmServerMod, Configurable, PreInitable, Serv
         WriteLog("Templates Created.");
     }
 
-    private void WriteLog(String data) {
+    /**
+     * @param data Whats logged
+     */
+    public static void WriteLog(String data) {
         try {
             String logFile = "mods/GambleMod/log.txt";
             FileWriter writeLog = new FileWriter(logFile, true);
@@ -76,6 +62,7 @@ public class Initiator implements WurmServerMod, Configurable, PreInitable, Serv
             bufferedLogWriter.close();
         } catch (IOException ex) {
             ex.printStackTrace();
+            Initiator.WriteLog(String.valueOf(ex));
         }
     }
 }

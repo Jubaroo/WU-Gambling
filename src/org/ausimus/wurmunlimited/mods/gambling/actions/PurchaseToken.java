@@ -19,6 +19,7 @@ import com.wurmonline.server.FailedException;
 import com.wurmonline.server.Items;
 import com.wurmonline.server.economy.MonetaryConstants;
 import com.wurmonline.server.items.*;
+import org.ausimus.wurmunlimited.mods.gambling.Initiator;
 import org.ausimus.wurmunlimited.mods.gambling.config.AusConstants;
 import org.gotti.wurmunlimited.modloader.interfaces.WurmServerMod;
 import org.gotti.wurmunlimited.modsupport.actions.ActionPerformer;
@@ -109,6 +110,9 @@ public class PurchaseToken implements WurmServerMod, ItemTypes, MiscConstants, M
                 performer.getCommunicator().sendNormalServerMessage("Purchased a token with a value of " + value + ".");
             } catch (FailedException | NoSuchTemplateException ex) {
                 ex.printStackTrace();
+                if (AusConstants.InDepthLogging) {
+                    Initiator.WriteLog(String.valueOf(ex));
+                }
             }
         } else {
             performer.getCommunicator().sendNormalServerMessage("Can't do that.");

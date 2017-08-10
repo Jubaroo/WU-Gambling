@@ -35,7 +35,7 @@ public class PlaceBet implements WurmServerMod, ItemTypes, MiscConstants, ModAct
 
     public PlaceBet() {
         actionID = (short) ModActions.getNextActionId();
-        actionEntry = ActionEntry.createEntry(actionID, "Place Bet", "Picking", new int[]{});
+        actionEntry = ActionEntry.createEntry(actionID, "Place Bet", "Placing", new int[]{});
         ModActions.registerAction(actionEntry);
     }
 
@@ -81,21 +81,29 @@ public class PlaceBet implements WurmServerMod, ItemTypes, MiscConstants, ModAct
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
         if (source.getTemplateId() == AusConstants.GamblingTokenTemplateID && target.getTemplateId() == AusConstants.GamblingMachineTemplateID) {
-            if (source.getData2() < 0 && source.getColor() < 0) {
-                performer.getCommunicator().sendNormalServerMessage("The token has no bet info.");
+
+            if (target.getData2() == -1 && target.getColor() == -1) {
+                performer.getCommunicator().sendNormalServerMessage("The token has no bet data.");
                 return true;
             }
+
             source.setIsNoTake(true);
             source.savePermissions();
             target.setData1(target.getData1() + source.getData1());
+
+            // Set Color
             if (source.getColor() >= 0) {
                 target.setColor(source.getColor());
             }
-            if (source.getData2() >= 0) {
-                target.setData2(source.getData2());
+
+            // Set Value
+            if (source.getData1() >= 0) {
+                target.setData1(target.getData1() + source.getData1());
             }
+
             performer.getCommunicator().sendNormalServerMessage("Bet placed and token added to machine.");
             target.getInsertItem().insertItem(source);
+
         } else {
             performer.getCommunicator().sendNormalServerMessage("Cant do that");
         }
