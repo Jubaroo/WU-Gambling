@@ -74,30 +74,42 @@ public class PurchaseToken implements WurmServerMod, ItemTypes, MiscConstants, M
         if (source == target && source.isCoin()) {
             try {
                 // Designate coin values
-                if (source.getTemplateId() == ItemList.coinIron)
+                if (source.getTemplateId() == ItemList.coinIron) {
                     value = MonetaryConstants.COIN_IRON;
-                if (source.getTemplateId() == ItemList.coinIronFive)
+                }
+                if (source.getTemplateId() == ItemList.coinIronFive) {
                     value = MonetaryConstants.COIN_IRON * 5;
-                if (source.getTemplateId() == ItemList.coinIronTwenty)
+                }
+                if (source.getTemplateId() == ItemList.coinIronTwenty) {
                     value = MonetaryConstants.COIN_IRON * 20;
-                if (source.getTemplateId() == ItemList.coinCopper)
+                }
+                if (source.getTemplateId() == ItemList.coinCopper) {
                     value = MonetaryConstants.COIN_COPPER;
-                if (source.getTemplateId() == ItemList.coinCopperFive)
+                }
+                if (source.getTemplateId() == ItemList.coinCopperFive) {
                     value = MonetaryConstants.COIN_COPPER * 5;
-                if (source.getTemplateId() == ItemList.coinCopperTwenty)
+                }
+                if (source.getTemplateId() == ItemList.coinCopperTwenty) {
                     value = MonetaryConstants.COIN_COPPER * 20;
-                if (source.getTemplateId() == ItemList.coinSilver)
+                }
+                if (source.getTemplateId() == ItemList.coinSilver) {
                     value = MonetaryConstants.COIN_SILVER;
-                if (source.getTemplateId() == ItemList.coinSilverFive)
+                }
+                if (source.getTemplateId() == ItemList.coinSilverFive) {
                     value = MonetaryConstants.COIN_SILVER * 5;
-                if (source.getTemplateId() == ItemList.coinSilverTwenty)
+                }
+                if (source.getTemplateId() == ItemList.coinSilverTwenty) {
                     value = MonetaryConstants.COIN_SILVER * 20;
-                if (source.getTemplateId() == ItemList.coinGold)
+                }
+                if (source.getTemplateId() == ItemList.coinGold) {
                     value = MonetaryConstants.COIN_GOLD;
-                if (source.getTemplateId() == ItemList.coinGoldFive)
+                }
+                if (source.getTemplateId() == ItemList.coinGoldFive) {
                     value = MonetaryConstants.COIN_GOLD * 5;
-                if (source.getTemplateId() == ItemList.coinGoldTwenty)
+                }
+                if (source.getTemplateId() == ItemList.coinGoldTwenty) {
                     value = MonetaryConstants.COIN_GOLD * 20;
+                }
 
                 // Create the item and set its data for value.
                 Item x = ItemFactory.createItem(AusConstants.GamblingTokenTemplateID, source.getQualityLevel(), performer.getName());

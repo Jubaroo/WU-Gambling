@@ -59,6 +59,12 @@ public class TokenRedeem implements WurmServerMod, ItemTypes, MiscConstants, Mod
         return actionID;
     }
 
+    /**
+     * @param performer performer representing the instantiation of Creature.
+     * @param source    The Item source.
+     * @param target    The Item target.
+     * @return {@link Collections#singletonList(java.lang.Object) object will = {@link TokenRedeem#actionEntry} else is null.}.
+     **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
         if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
@@ -81,8 +87,8 @@ public class TokenRedeem implements WurmServerMod, ItemTypes, MiscConstants, Mod
     }
 
     /**
-     * @param performer The performer
-     * @param target The target
+     * @param performer The performer.
+     * @param target    The target.
      */
     private void Redeem(Creature performer, Item target) {
         try {

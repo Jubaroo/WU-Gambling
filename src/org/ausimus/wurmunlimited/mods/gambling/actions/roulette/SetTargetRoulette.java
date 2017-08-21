@@ -59,7 +59,7 @@ public class SetTargetRoulette implements WurmServerMod, ItemTypes, MiscConstant
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
      * @param target    The Item target.
-     * @return Fuck Warnings.
+     * @return {@link Collections#singletonList(java.lang.Object) object will = {@link SetTargetRoulette#actionEntry} else is null.}.
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
@@ -77,7 +77,7 @@ public class SetTargetRoulette implements WurmServerMod, ItemTypes, MiscConstant
      * @param target    The Item target.
      * @param action    Action ID number.
      * @param counter   Timer shit.
-     * @return Fuck Warnings.
+     * @return boolean.
      **/
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {

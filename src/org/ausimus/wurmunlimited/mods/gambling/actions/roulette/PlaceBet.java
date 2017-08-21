@@ -35,7 +35,7 @@ public class PlaceBet implements WurmServerMod, ItemTypes, MiscConstants, ModAct
 
     public PlaceBet() {
         actionID = (short) ModActions.getNextActionId();
-        actionEntry = ActionEntry.createEntry(actionID, "Place Bet", "Placing", new int[]{});
+        actionEntry = ActionEntry.createEntry(actionID, "Place Bet", "Placing bet", new int[]{});
         ModActions.registerAction(actionEntry);
     }
 
@@ -58,7 +58,7 @@ public class PlaceBet implements WurmServerMod, ItemTypes, MiscConstants, ModAct
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
      * @param target    The Item target.
-     * @return Fuck Warnings.
+     * @return {@link Collections#singletonList(java.lang.Object) object will = {@link PlaceBet#actionEntry} else is null.}.
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
@@ -76,7 +76,7 @@ public class PlaceBet implements WurmServerMod, ItemTypes, MiscConstants, ModAct
      * @param target    The Item target.
      * @param action    Action ID number.
      * @param counter   Timer shit.
-     * @return Fuck Warnings.
+     * @return boolean.
      **/
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {

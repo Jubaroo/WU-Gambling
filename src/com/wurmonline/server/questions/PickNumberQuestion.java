@@ -24,23 +24,18 @@ import java.util.Properties;
 
 public final class PickNumberQuestion extends Question implements ItemMaterials {
 
-    /**
-     * @param aResponder Creature performer
-     * @param aTitle Question title
-     * @param aQuestion Question
-     * @param aTarget Item target
-     */
     public PickNumberQuestion(Creature aResponder, String aTitle, String aQuestion, long aTarget) {
         super(aResponder, aTitle, aQuestion, 4, aTarget);
     }
 
     public void sendQuestion() {
         StringBuilder buf = new StringBuilder(this.getBmlHeader());
-        int height = 340;
+        int width = 150;
+        int height = 150;
         try {
-            Item it = Items.getItem(this.target);
-            int data2 = it.getData2();
-            if (it.hasData()) {
+            Item target = Items.getItem(this.target);
+            int data2 = target.getData2();
+            if (target.hasData()) {
                 buf.append("harray{input{id='data2'; maxchars='20'; text='").append(data2).append("'}label{text='Roulette Number'}}");
             }
         } catch (NoSuchItemException ex) {
@@ -48,20 +43,14 @@ public final class PickNumberQuestion extends Question implements ItemMaterials 
         }
 
         buf.append(this.createAnswerButton2());
-        this.getResponder().getCommunicator().sendBml(300, height, true, true, buf.toString(), 200, 200, 200, this.title);
+        this.getResponder().getCommunicator().sendBml(width, height, true, true, buf.toString(), 0, 0, 255, this.title);
     }
 
-    /**
-     * @param answers Array of answers
-     */
     public void answer(Properties answers) {
         this.setAnswer(answers);
         parseItemDataQuestion(this);
     }
 
-    /**
-     * @param question The question
-     */
     private void parseItemDataQuestion(PickNumberQuestion question) {
         Creature performer = this.getResponder();
         long target = question.getTarget();

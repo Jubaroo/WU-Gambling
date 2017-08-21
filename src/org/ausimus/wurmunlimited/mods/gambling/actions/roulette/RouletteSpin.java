@@ -34,13 +34,13 @@ import java.util.List;
 import java.util.Random;
 
 public class RouletteSpin implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
-    private static short PTID;
-    private static ActionEntry actionEntryPT;
+    private static short actionID;
+    private static ActionEntry actionEntry;
 
     public RouletteSpin() {
-        PTID = (short) ModActions.getNextActionId();
-        actionEntryPT = ActionEntry.createEntry(PTID, "Spin", "Spinning", new int[]{});
-        ModActions.registerAction(actionEntryPT);
+        actionID = (short) ModActions.getNextActionId();
+        actionEntry = ActionEntry.createEntry(actionID, "Spin", "Spinning", new int[]{});
+        ModActions.registerAction(actionEntry);
     }
 
     @Override
@@ -55,19 +55,19 @@ public class RouletteSpin implements WurmServerMod, ItemTypes, MiscConstants, Mo
 
     @Override
     public short getActionId() {
-        return PTID;
+        return actionID;
     }
 
     /**
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
      * @param target    The Item target.
-     * @return Fuck Warnings.
+     * @return {@link Collections#singletonList(java.lang.Object) object will = {@link RouletteSpin#actionEntry} else is null.}.
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
         if (source.getTemplateId() == ItemList.bodyHand && target.getTemplateId() == AusConstants.GamblingMachineTemplateID && target.getAuxData() == AusConstants.GameModeRoulette) {
-            return Collections.singletonList(actionEntryPT);
+            return Collections.singletonList(actionEntry);
         } else {
             return null;
         }
@@ -80,7 +80,7 @@ public class RouletteSpin implements WurmServerMod, ItemTypes, MiscConstants, Mo
      * @param target    The Item target.
      * @param action    Action ID number.
      * @param counter   Timer shit.
-     * @return Fuck Warnings.
+     * @return boolean.
      **/
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
@@ -136,7 +136,8 @@ public class RouletteSpin implements WurmServerMod, ItemTypes, MiscConstants, Mo
                         performer.setMoney(performer.getMoney() + target.getData1() * 2);
                     }
                     if (randomNumberPick == target.getData2() && target.getColor() == AusConstants.White && randomColor == 1) {
-                        performer.getCommunicator().sendNormalServerMessage("You won the color and the number.");performer.setMoney(performer.getMoney() + target.getData1() * 2);
+                        performer.getCommunicator().sendNormalServerMessage("You won the color and the number.");
+                        performer.setMoney(performer.getMoney() + target.getData1() * 2);
                         performer.setMoney(performer.getMoney() + target.getData1() * 2);
                     }
                 }

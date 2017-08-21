@@ -60,7 +60,7 @@ public class GetRouletteTokenInfo implements WurmServerMod, ItemTypes, MiscConst
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
      * @param target    The Item target.
-     * @return Fuck Warnings.
+     * @return {@link Collections#singletonList(java.lang.Object) object will = {@link GetRouletteTokenInfo#actionEntry} else is null.}.
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
@@ -78,7 +78,7 @@ public class GetRouletteTokenInfo implements WurmServerMod, ItemTypes, MiscConst
      * @param target    The Item target.
      * @param action    Action ID number.
      * @param counter   Timer shit.
-     * @return Fuck Warnings.
+     * @return boolean.
      **/
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
