@@ -17,9 +17,10 @@ package org.ausimus.wurmunlimited.mods.gambling.config;
 
 import com.wurmonline.server.items.WurmColor;
 
-public class AusConstants {
+public class AusConstants
+{
     public static boolean InDepthLogging = true;
-    public static byte GameModeSlots = 1;
+    // public static byte GameModeSlots = 1;
     public static byte GameModeRoulette = 2;
     public static int GamblingTokenTemplateID = 13370;
     public static int GamblingMachineTemplateID = 13371;

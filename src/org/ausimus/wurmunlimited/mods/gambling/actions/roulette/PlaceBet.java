@@ -26,8 +26,14 @@ import org.gotti.wurmunlimited.modsupport.actions.ModActions;
 import com.wurmonline.server.behaviours.Action;
 import com.wurmonline.server.behaviours.ActionEntry;
 import com.wurmonline.server.creatures.Creature;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 public class PlaceBet implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
     private static short actionID;
@@ -81,29 +87,17 @@ public class PlaceBet implements WurmServerMod, ItemTypes, MiscConstants, ModAct
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
         if (source.getTemplateId() == AusConstants.GamblingTokenTemplateID && target.getTemplateId() == AusConstants.GamblingMachineTemplateID) {
-
-            if (target.getData2() == -1 && target.getColor() == -1) {
-                performer.getCommunicator().sendNormalServerMessage("The token has no bet data.");
-                return true;
-            }
-
-            source.setIsNoTake(true);
-            source.savePermissions();
             target.setData1(target.getData1() + source.getData1());
 
             // Set Color
-            if (source.getColor() >= 0) {
-                target.setColor(source.getColor());
-            }
+            target.setColor(source.getColor());
 
             // Set Value
-            if (source.getData1() >= 0) {
-                target.setData1(target.getData1() + source.getData1());
-            }
+            target.setData1(target.getData1() + source.getData1());
 
             performer.getCommunicator().sendNormalServerMessage("Bet placed and token added to machine.");
-            target.getInsertItem().insertItem(source);
-
+            source.setIsNoTake(true);
+            source.savePermissions();
         } else {
             performer.getCommunicator().sendNormalServerMessage("Cant do that");
         }

@@ -29,47 +29,76 @@ import com.wurmonline.server.creatures.Creature;
 import java.util.Collections;
 import java.util.List;
 
-public class PickWhite implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
+public class PickWhite implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer
+{
     private static short actionID;
     private static ActionEntry actionEntry;
 
-    public PickWhite() {
+    public PickWhite()
+    {
         actionID = (short) ModActions.getNextActionId();
         actionEntry = ActionEntry.createEntry(actionID, "Pick White", "Picking", new int[]{});
         ModActions.registerAction(actionEntry);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public BehaviourProvider getBehaviourProvider() {
+    public BehaviourProvider getBehaviourProvider()
+    {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public ActionPerformer getActionPerformer() {
+    public ActionPerformer getActionPerformer()
+    {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public short getActionId() {
+    public short getActionId()
+    {
         return actionID;
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
      * @param target    The Item target.
      * @return {@link Collections#singletonList(java.lang.Object) object will = {@link PickWhite#actionEntry} else is null.}.
      **/
     @Override
-    public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID && source.getColor() != AusConstants.White) {
+    public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target)
+    {
+        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID
+                && source.getColor() != AusConstants.White)
+        {
             return Collections.singletonList(actionEntry);
-        } else {
+        }
+        else
+        {
             return null;
         }
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param act       the act.
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
@@ -79,13 +108,18 @@ public class PickWhite implements WurmServerMod, ItemTypes, MiscConstants, ModAc
      * @return boolean.
      **/
     @Override
-    public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
+    public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter)
+    {
         // Set the color
-        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID && source.getColor() != AusConstants.White) {
+        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID
+                && source.getColor() != AusConstants.White)
+        {
             target.setColor(AusConstants.White);
             target.setName(target.getTemplate().getName() + " [Roulette], [++]");
             performer.getCommunicator().sendNormalServerMessage("You chose white");
-        } else {
+        }
+        else
+        {
             performer.getCommunicator().sendNormalServerMessage("Cant do that");
         }
         return true;

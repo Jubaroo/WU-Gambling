@@ -1,4 +1,4 @@
-package org.ausimus.wurmunlimited.mods.gambling.actions.roulette;
+package org.ausimus.wurmunlimited.mods.gambling.actions;
 
 /*
      ___          ___          ___                     ___          ___          ___
@@ -15,35 +15,35 @@ package org.ausimus.wurmunlimited.mods.gambling.actions.roulette;
 
 */
 
-import com.wurmonline.server.*;
 import com.wurmonline.server.items.*;
-import com.wurmonline.server.players.Player;
 import org.ausimus.wurmunlimited.mods.gambling.config.AusConstants;
 import org.gotti.wurmunlimited.modloader.interfaces.WurmServerMod;
 import org.gotti.wurmunlimited.modsupport.actions.ActionPerformer;
 import org.gotti.wurmunlimited.modsupport.actions.BehaviourProvider;
 import org.gotti.wurmunlimited.modsupport.actions.ModAction;
 import org.gotti.wurmunlimited.modsupport.actions.ModActions;
+import com.wurmonline.server.MiscConstants;
 import com.wurmonline.server.behaviours.Action;
 import com.wurmonline.server.behaviours.ActionEntry;
 import com.wurmonline.server.creatures.Creature;
-import java.util.*;
 
-public class SetTargetRoulette implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer
+import java.util.Collections;
+import java.util.List;
+
+public class DebugMachine implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer
 {
-
     private static short actionID;
     private static ActionEntry actionEntry;
 
-    public SetTargetRoulette()
+    DebugMachine()
     {
         actionID = (short) ModActions.getNextActionId();
-        actionEntry = ActionEntry.createEntry(actionID, "Set to Roulette", "setting", new int[]{});
+        actionEntry = ActionEntry.createEntry(actionID, "Get Debug Info", "-_-", new int[]{});
         ModActions.registerAction(actionEntry);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc
      *
      * @return
      */
@@ -81,13 +81,13 @@ public class SetTargetRoulette implements WurmServerMod, ItemTypes, MiscConstant
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
      * @param target    The Item target.
-     * @return {@link Collections#singletonList(java.lang.Object) object will = {@link SetTargetRoulette#actionEntry} else is null.}.
+     * @return {@link Collections#singletonList(java.lang.Object) object will = {@link DebugMachine#actionEntry} else is null.}.
      **/
     @Override
     public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target)
     {
-        if (performer instanceof Player && target.getTemplateId() == AusConstants.GamblingMachineTemplateID
-                && target.getAuxData() != AusConstants.GameModeRoulette)
+        if (performer.getPower() == MiscConstants.POWER_IMPLEMENTOR &&
+                target.getTemplateId() == AusConstants.GamblingMachineTemplateID)
         {
             return Collections.singletonList(actionEntry);
         }
@@ -111,18 +111,19 @@ public class SetTargetRoulette implements WurmServerMod, ItemTypes, MiscConstant
     @Override
     public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter)
     {
-        if (performer instanceof Player && target.getTemplateId() == AusConstants.GamblingMachineTemplateID
-                && target.getAuxData() != AusConstants.GameModeRoulette)
+        Item[] items = target.getAllItems(true);
+        int index;
+        if (performer.getPower() == MiscConstants.POWER_IMPLEMENTOR &&
+                target.getTemplateId() == AusConstants.GamblingMachineTemplateID)
         {
-            target.setAuxData(AusConstants.GameModeRoulette);
-            source.setData2(-1);
-            source.setColor(-1);
-            target.setName(target.getTemplate().getName() + " [Roulette]");
-            performer.getCommunicator().sendNormalServerMessage("Set to roulette.");
-        }
-        else
-        {
-            performer.getCommunicator().sendNormalServerMessage("Cant do that.");
+            for (index = 0; index < items.length;)
+            {
+                if (items[index].getTemplateId() == AusConstants.GamblingTokenTemplateID)
+                {
+                    performer.getCommunicator().sendNormalServerMessage(
+                            "Combined value of all internal tokens = " + items[index].getData1());
+                }
+            }
         }
         return true;
     }

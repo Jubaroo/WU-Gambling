@@ -34,50 +34,75 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-public class TokenRedeem implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
+public class TokenRedeem implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer
+{
     private static short actionID;
     private static ActionEntry actionEntry;
 
-    TokenRedeem() {
+    TokenRedeem()
+    {
         actionID = (short) ModActions.getNextActionId();
         actionEntry = ActionEntry.createEntry(actionID, "Redeem Token", "Redeeming", new int[]{});
         ModActions.registerAction(actionEntry);
     }
 
     @Override
-    public BehaviourProvider getBehaviourProvider() {
+    public BehaviourProvider getBehaviourProvider()
+    {
         return this;
     }
 
     @Override
-    public ActionPerformer getActionPerformer() {
+    public ActionPerformer getActionPerformer()
+    {
         return this;
     }
 
     @Override
-    public short getActionId() {
+    public short getActionId()
+    {
         return actionID;
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
      * @param target    The Item target.
      * @return {@link Collections#singletonList(java.lang.Object) object will = {@link TokenRedeem#actionEntry} else is null.}.
      **/
     @Override
-    public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
+    public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target)
+    {
+        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID)
+        {
             return Collections.singletonList(actionEntry);
-        } else {
+        }
+        else
+        {
             return null;
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param act
+     * @param performer
+     * @param source
+     * @param target
+     * @param action
+     * @param counter
+     * @return
+     */
     @Override
-    public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
-        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
-            if (source.getData1() < 1) {
+    public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter)
+    {
+        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID)
+        {
+            if (source.getData1() < 1)
+            {
                 performer.getCommunicator().sendNormalServerMessage("The token has no value.");
                 return true;
             }
@@ -87,16 +112,22 @@ public class TokenRedeem implements WurmServerMod, ItemTypes, MiscConstants, Mod
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param performer The performer.
      * @param target    The target.
      */
-    private void Redeem(Creature performer, Item target) {
-        try {
+    private void Redeem(Creature performer, Item target)
+    {
+        try
+        {
             Change c = new Change(performer.getMoney() + target.getData1());
             performer.setMoney(performer.getMoney() + target.getData1());
             performer.getCommunicator().sendNormalServerMessage("New Bank balance: " + c.getChangeString() + ".");
             Items.destroyItem(target.getWurmId());
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             ex.printStackTrace();
             Initiator.WriteLog(String.valueOf(ex));
         }

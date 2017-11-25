@@ -30,47 +30,75 @@ import com.wurmonline.server.creatures.Creature;
 import java.util.Collections;
 import java.util.List;
 
-public class PickNumber implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
+public class PickNumber implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer
+{
     private static short actionID;
     private static ActionEntry actionEntry;
 
-    public PickNumber() {
+    public PickNumber()
+    {
         actionID = (short) ModActions.getNextActionId();
         actionEntry = ActionEntry.createEntry(actionID, "Pick Number", "Picking", new int[]{});
         ModActions.registerAction(actionEntry);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public BehaviourProvider getBehaviourProvider() {
+    public BehaviourProvider getBehaviourProvider()
+    {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public ActionPerformer getActionPerformer() {
+    public ActionPerformer getActionPerformer()
+    {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public short getActionId() {
+    public short getActionId()
+    {
         return actionID;
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
      * @param target    The Item target.
      * @return {@link Collections#singletonList(java.lang.Object) object will = {@link PickNumber#actionEntry} else is null.}.
      **/
     @Override
-    public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target && target.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
+    public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target)
+    {
+        if (source == target && target.getTemplateId() == AusConstants.GamblingTokenTemplateID)
+        {
             return Collections.singletonList(actionEntry);
-        } else {
+        }
+        else
+        {
             return null;
         }
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param act       the act.
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
@@ -80,11 +108,16 @@ public class PickNumber implements WurmServerMod, ItemTypes, MiscConstants, ModA
      * @return boolean.
      **/
     @Override
-    public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
-        if (source == target && target.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
-            PickNumberQuestion pnq = new PickNumberQuestion(performer, "Imput a number.", "Imput a number.", target.getWurmId());
+    public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter)
+    {
+        if (source == target && target.getTemplateId() == AusConstants.GamblingTokenTemplateID)
+        {
+            PickNumberQuestion pnq = new PickNumberQuestion(performer,
+                    "Imput a number.", "Imput a number.", target.getWurmId());
             pnq.sendQuestion();
-        } else {
+        }
+        else
+        {
             performer.getCommunicator().sendNormalServerMessage("Cant do that");
         }
         return true;

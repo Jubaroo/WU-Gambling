@@ -34,80 +34,138 @@ import com.wurmonline.server.creatures.Creature;
 import java.util.Collections;
 import java.util.List;
 
-public class PurchaseToken implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
+public class PurchaseToken implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer
+{
     private static short actionID;
     private static ActionEntry actionEntry;
 
-    PurchaseToken() {
+    PurchaseToken()
+    {
         actionID = (short) ModActions.getNextActionId();
         actionEntry = ActionEntry.createEntry(actionID, "Purchase Token", "Purchasing", new int[]{});
         ModActions.registerAction(actionEntry);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public BehaviourProvider getBehaviourProvider() {
+    public BehaviourProvider getBehaviourProvider()
+    {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public ActionPerformer getActionPerformer() {
+    public ActionPerformer getActionPerformer()
+    {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public short getActionId() {
+    public short getActionId()
+    {
         return actionID;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param performer
+     * @param source
+     * @param target
+     * @return
+     */
     @Override
-    public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target && source.isCoin()) {
+    public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target)
+    {
+        if (source == target && source.isCoin())
+        {
             return Collections.singletonList(actionEntry);
-        } else {
+        }
+        else
+        {
             return null;
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param act
+     * @param performer
+     * @param source
+     * @param target
+     * @param action
+     * @param counter
+     * @return
+     */
     @Override
-    public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
+    public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter)
+    {
         int value = 0;
-        if (source == target && source.isCoin()) {
-            try {
+        if (source == target && source.isCoin())
+        {
+            try
+            {
                 // Designate coin values
-                if (source.getTemplateId() == ItemList.coinIron) {
+                if (source.getTemplateId() == ItemList.coinIron)
+                {
                     value = MonetaryConstants.COIN_IRON;
                 }
-                if (source.getTemplateId() == ItemList.coinIronFive) {
+                if (source.getTemplateId() == ItemList.coinIronFive)
+                {
                     value = MonetaryConstants.COIN_IRON * 5;
                 }
-                if (source.getTemplateId() == ItemList.coinIronTwenty) {
+                if (source.getTemplateId() == ItemList.coinIronTwenty)
+                {
                     value = MonetaryConstants.COIN_IRON * 20;
                 }
-                if (source.getTemplateId() == ItemList.coinCopper) {
+                if (source.getTemplateId() == ItemList.coinCopper)
+                {
                     value = MonetaryConstants.COIN_COPPER;
                 }
-                if (source.getTemplateId() == ItemList.coinCopperFive) {
+                if (source.getTemplateId() == ItemList.coinCopperFive)
+                {
                     value = MonetaryConstants.COIN_COPPER * 5;
                 }
-                if (source.getTemplateId() == ItemList.coinCopperTwenty) {
+                if (source.getTemplateId() == ItemList.coinCopperTwenty)
+                {
                     value = MonetaryConstants.COIN_COPPER * 20;
                 }
-                if (source.getTemplateId() == ItemList.coinSilver) {
+                if (source.getTemplateId() == ItemList.coinSilver)
+                {
                     value = MonetaryConstants.COIN_SILVER;
                 }
-                if (source.getTemplateId() == ItemList.coinSilverFive) {
+                if (source.getTemplateId() == ItemList.coinSilverFive)
+                {
                     value = MonetaryConstants.COIN_SILVER * 5;
                 }
-                if (source.getTemplateId() == ItemList.coinSilverTwenty) {
+                if (source.getTemplateId() == ItemList.coinSilverTwenty)
+                {
                     value = MonetaryConstants.COIN_SILVER * 20;
                 }
-                if (source.getTemplateId() == ItemList.coinGold) {
+                if (source.getTemplateId() == ItemList.coinGold)
+                {
                     value = MonetaryConstants.COIN_GOLD;
                 }
-                if (source.getTemplateId() == ItemList.coinGoldFive) {
+                if (source.getTemplateId() == ItemList.coinGoldFive)
+                {
                     value = MonetaryConstants.COIN_GOLD * 5;
                 }
-                if (source.getTemplateId() == ItemList.coinGoldTwenty) {
+                if (source.getTemplateId() == ItemList.coinGoldTwenty)
+                {
                     value = MonetaryConstants.COIN_GOLD * 20;
                 }
 
@@ -120,13 +178,18 @@ public class PurchaseToken implements WurmServerMod, ItemTypes, MiscConstants, M
                 x.setMaterial(source.getMaterial());
                 Items.destroyItem(target.getWurmId());
                 performer.getCommunicator().sendNormalServerMessage("Purchased a token with a value of " + value + ".");
-            } catch (FailedException | NoSuchTemplateException ex) {
+            }
+            catch (FailedException | NoSuchTemplateException ex)
+            {
                 ex.printStackTrace();
-                if (AusConstants.InDepthLogging) {
+                if (AusConstants.InDepthLogging)
+                {
                     Initiator.WriteLog(String.valueOf(ex));
                 }
             }
-        } else {
+        }
+        else
+        {
             performer.getCommunicator().sendNormalServerMessage("Can't do that.");
         }
         return true;

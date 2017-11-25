@@ -18,6 +18,7 @@ package org.ausimus.wurmunlimited.mods.gambling.actions.roulette;
 import com.wurmonline.server.*;
 import com.wurmonline.server.items.*;
 import org.ausimus.wurmunlimited.mods.gambling.config.AusConstants;
+import org.ausimus.wurmunlimited.mods.gambling.dataStream;
 import org.gotti.wurmunlimited.modloader.interfaces.WurmServerMod;
 import org.gotti.wurmunlimited.modsupport.actions.ActionPerformer;
 import org.gotti.wurmunlimited.modsupport.actions.BehaviourProvider;
@@ -123,22 +124,24 @@ public class RouletteSpin implements WurmServerMod, ItemTypes, MiscConstants, Mo
                 if (target.getData2() >= 0) {
                     if (randomNumberPick == target.getData2()) {
                         performer.getCommunicator().sendNormalServerMessage("You win, you rolled " + randomNumberPick + ".");
-                        performer.setMoney(performer.getMoney() + target.getData1() * 2);
+                        performer.setMoney(performer.getMoney() + dataStream.getData(target) / 2);
+                        dataStream.writeData(target, dataStream.getData(target) / 2);
                     } else {
                         performer.getCommunicator().sendNormalServerMessage("You did not win the number, the random # was " + randomNumberPick + ".");
                     }
                 }
 
-                // Give em the pot
+                // Give em the dataStream
                 if (target.getColor() != -1 && target.getData2() >= 0) {
                     if (randomNumberPick == target.getData2() && target.getColor() == AusConstants.Black && randomColor == 0) {
                         performer.getCommunicator().sendNormalServerMessage("You won the color and the number.");
-                        performer.setMoney(performer.getMoney() + target.getData1() * 2);
+                        performer.setMoney(performer.getMoney() + dataStream.getData(target));
+                        dataStream.writeData(target, 0);
                     }
                     if (randomNumberPick == target.getData2() && target.getColor() == AusConstants.White && randomColor == 1) {
                         performer.getCommunicator().sendNormalServerMessage("You won the color and the number.");
-                        performer.setMoney(performer.getMoney() + target.getData1() * 2);
-                        performer.setMoney(performer.getMoney() + target.getData1() * 2);
+                        performer.setMoney(performer.getMoney() + dataStream.getData(target));
+                        dataStream.writeData(target, 0);
                     }
                 }
 

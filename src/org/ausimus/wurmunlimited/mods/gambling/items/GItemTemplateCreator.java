@@ -25,11 +25,12 @@ import org.ausimus.wurmunlimited.mods.gambling.config.AusConstants;
 
 import java.io.IOException;
 
-/*Todo Reformat*/
-
-public class GItemTemplateCreator {
-    public GItemTemplateCreator() {
-        try {
+public class GItemTemplateCreator
+{
+    public GItemTemplateCreator()
+    {
+        try
+        {
             // Token
             com.wurmonline.server.items.ItemTemplateCreator.createItemTemplate(
                     AusConstants.GamblingTokenTemplateID,
@@ -48,9 +49,9 @@ public class GItemTemplateCreator {
                     (short) 1,
                     0,
                     TimeConstants.DECAYTIME_NEVER,
-                    3,
-                    4,
-                    150,
+                    1,
+                    1,
+                    1,
                     0,
                     MiscConstants.EMPTY_BYTE_PRIMITIVE_ARRAY,
                     "LeNull",
@@ -75,16 +76,16 @@ public class GItemTemplateCreator {
                                     ItemTypes.ITEM_TYPE_HASDATA,
                                     ItemTypes.ITEM_TYPE_NOTAKE,
                                     ItemTypes.ITEM_TYPE_DECORATION,
-                                    ItemTypes.ITEM_TYPE_NOPUT,
+                                    //ItemTypes.ITEM_TYPE_NOPUT,
                                     ItemTypes.ITEM_TYPE_USE_GROUND_ONLY
                             },
                     (short) IconConstants.IRON_RUNE_JACKAL,
                     (short) 1,
                     0,
                     TimeConstants.DECAYTIME_NEVER,
-                    3,
-                    4,
-                    150,
+                    500,
+                    500,
+                    500,
                     0,
                     MiscConstants.EMPTY_BYTE_PRIMITIVE_ARRAY,
                     "model.ausimus.GamblingMachine.",
@@ -93,9 +94,12 @@ public class GItemTemplateCreator {
                     ItemMaterials.MATERIAL_BRONZE,
                     0,
                     true);
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             ex.printStackTrace();
-            if (AusConstants.InDepthLogging) {
+            if (AusConstants.InDepthLogging)
+            {
                 Initiator.WriteLog(String.valueOf(ex));
             }
         }

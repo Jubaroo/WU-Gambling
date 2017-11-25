@@ -1,4 +1,4 @@
-package org.ausimus.wurmunlimited.mods.gambling.actions.roulette;
+package org.ausimus.wurmunlimited.mods.gambling.actions;
 
 /*
      ___          ___          ___                     ___          ___          ___
@@ -31,47 +31,75 @@ import com.wurmonline.server.creatures.Creature;
 import java.util.Collections;
 import java.util.List;
 
-public class GetRouletteTokenInfo implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer {
+public class DebugToken implements WurmServerMod, ItemTypes, MiscConstants, ModAction, BehaviourProvider, ActionPerformer
+{
     private static short actionID;
     private static ActionEntry actionEntry;
 
-    public GetRouletteTokenInfo() {
+    DebugToken()
+    {
         actionID = (short) ModActions.getNextActionId();
         actionEntry = ActionEntry.createEntry(actionID, "Get Roulette Info", "Getting", new int[]{});
         ModActions.registerAction(actionEntry);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public BehaviourProvider getBehaviourProvider() {
+    public BehaviourProvider getBehaviourProvider()
+    {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public ActionPerformer getActionPerformer() {
+    public ActionPerformer getActionPerformer()
+    {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
-    public short getActionId() {
+    public short getActionId()
+    {
         return actionID;
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
      * @param target    The Item target.
-     * @return {@link Collections#singletonList(java.lang.Object) object will = {@link GetRouletteTokenInfo#actionEntry} else is null.}.
+     * @return {@link Collections#singletonList(java.lang.Object) object will = {@link DebugToken#actionEntry} else is null.}.
      **/
     @Override
-    public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target) {
-        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
+    public List<ActionEntry> getBehavioursFor(Creature performer, Item source, Item target)
+    {
+        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID)
+        {
             return Collections.singletonList(actionEntry);
-        } else {
+        }
+        else
+        {
             return null;
         }
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param act       the act.
      * @param performer performer representing the instantiation of Creature.
      * @param source    The Item source.
@@ -81,23 +109,31 @@ public class GetRouletteTokenInfo implements WurmServerMod, ItemTypes, MiscConst
      * @return boolean.
      **/
     @Override
-    public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter) {
-        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID) {
-            if (target.getColor() == AusConstants.Black) {
+    public boolean action(Action act, Creature performer, Item source, Item target, short action, float counter)
+    {
+        if (source == target && source.getTemplateId() == AusConstants.GamblingTokenTemplateID)
+        {
+            if (target.getColor() == AusConstants.Black)
+            {
                 performer.getCommunicator().sendNormalServerMessage("Color is Black.");
             }
-            if (target.getColor() == AusConstants.White) {
+            if (target.getColor() == AusConstants.White)
+            {
                 performer.getCommunicator().sendNormalServerMessage("Color is White.");
             }
-            if (target.getData1() >= 0) {
+            if (target.getData1() >= 0)
+            {
                 Change c = new Change(target.getData1());
                 performer.getCommunicator().sendNormalServerMessage("Value is " + c.getChangeString() + ".");
             }
-            if (target.getData2() >= 0) {
+            if (target.getData2() >= 0)
+            {
                 performer.getCommunicator().sendNormalServerMessage("Number is " + target.getData2() + ".");
             }
 
-        } else {
+        }
+        else
+        {
             performer.getCommunicator().sendNormalServerMessage("Cant do that.");
         }
         return true;
